@@ -10,6 +10,9 @@ class Shot(CircleShape):
         self.rect = self.image.get_rect(center=(x, y))
         self.velocity = velocity
         
-    def update(self):
-        self.rect.x += self.velocity.x
-        self.rect.y += self.velocity.y
+    def update(self, dt):
+        self.position += self.velocity * dt
+        self.rect.center = self.position
+        if (self.rect.left > SCREEN_WIDTH or self.rect.right < 0 or
+            self.rect.top > SCREEN_HEIGHT or self.rect.bottom < 0):
+            self.kill()

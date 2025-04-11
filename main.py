@@ -27,10 +27,17 @@ def main():
         screen.fill('black')
         for object in drawable:
             object.draw(screen)
+        shots.draw(screen)
         delta_time = clock.tick(60)
         dt = delta_time / 1000
-        shots.update()
+        shots.update(dt)
         updatable.update(dt)
+        for asteroid in asteroids:
+            for shot in shots:
+                if asteroid.collision(shot):
+                    asteroid.split()
+                    shot.kill()
+                    break
         for asteroid in asteroids:
             if asteroid.collision(player) == True:
                 print("Game Over!")
