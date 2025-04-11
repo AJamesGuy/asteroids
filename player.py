@@ -4,11 +4,12 @@ from shot import *
 import pygame
 
 class Player(CircleShape):
-    def __init__(self, x, y):
+    def __init__(self, x, y, shots_group):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.x = x
         self.y = y
+        self.shots_group = shots_group
 
     # in the player class
     def triangle(self):
@@ -48,7 +49,9 @@ class Player(CircleShape):
         self.position += forward * PLAYER_SPEED * dt
     
     def shoot(self):
-        shot = Shot(self.x, self.y, SHOT_RADIUS)
-        shot_velocity = pygame.Vector2(0, 1)
-        rotated_velocity = shot_velocity.rotate()
+        shot_velocity = pygame.Vector2(0, 1).rotate(self.rotation)
+        shot_velocity *= PLAYER_SHOOT_SPEED
+        shot = Shot(self.x, self.y, SHOT_RADIUS, velocity=shot_velocity)
+        self.shots_group.add(shot)
+        
     
